@@ -13,17 +13,18 @@ namespace Assignment
             try
             {
                 bool flag = false;
+               
                 flag = RandomNumber();
                 if (!flag)
                 {
-                    Console.WriteLine("---------Could not execute Random Numbers program becauseof invalid values");                  
+                    Console.WriteLine("---------Could not execute Random Numbers Test because of invalid values");                  
                 }
                 Console.WriteLine("-------------------------------------");
-                Console.WriteLine("Enter key to start the Dictionary Program");
+                Console.WriteLine("Enter key to start the Dictionary Test");
                 Console.Read();
                 DictionaryProgram();
                 Console.WriteLine("-------------------------------------");
-                Console.WriteLine("Enter key to start the Selenium Program");
+                Console.WriteLine("Enter key to start the Selenium Test");
                 Console.Read();
 
                 Console.WriteLine("-------------------------------------");
@@ -39,7 +40,7 @@ namespace Assignment
 
         private static void DictionaryProgram()
         {
-            Console.WriteLine("--------------Executing Dictionary Program-----------------");
+            Console.WriteLine("-------------- Dictionary Test: STARTED-----------------");
             try
             {
                 DictionaryAssignment objdictionary = new DictionaryAssignment();
@@ -48,20 +49,20 @@ namespace Assignment
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Ënter Valid Values");
+                Console.WriteLine("-------------- Dictionary Test: FAILED-----------------");
                 Console.WriteLine(ex.Message);
 
             }
             finally
             {
-                Console.WriteLine("--------------Executed Dictionary Program-----------------");
+                Console.WriteLine("-------------- Dictionary Test: COMPLETED-----------------");
             }
         }
 
         private static bool RandomNumber()
         {
             bool flag = false;
-            Console.WriteLine("---------------------Executing Random Numbers Program-------------------");
+            Console.WriteLine("-------------------- Random Numbers Test: STARTED-------------------");
            
             Console.WriteLine("Enter Minimum Range");
             string minRange = Console.ReadLine();
@@ -86,17 +87,18 @@ namespace Assignment
             }
             catch (Exception ex)
             {
+                Console.WriteLine("---------------------Random Numbers Test :FAILED-------------------");    
                 throw ex;
             }
             finally
             {
-                Console.WriteLine("---------------------Random Numbers Program completed-------------------");              
+                Console.WriteLine("---------------------Random Numbers Test :COMPLETED-------------------");              
             }
             return flag;
         }
         public static void ExecuteSeleniumTest()
         {
-            Console.WriteLine("--------------------Executing Selenium Test--------------------------");           
+            Console.WriteLine("-------------------Selenium Test: STARTED--------------------------");           
             try
             {
                 SeleniumAssignment sa = new SeleniumAssignment();
@@ -104,11 +106,12 @@ namespace Assignment
             }             
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Console.WriteLine("------------------- Selenium Test: FAILED--------------------------");
+                throw ex;
             }
              finally
             {
-                Console.WriteLine("--------------------Executed Selenium Test--------------------------");   
+                Console.WriteLine("------------------- Selenium Test: COMPLETED--------------------------");   
             }
         }
     }

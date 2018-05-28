@@ -30,10 +30,10 @@ namespace WeightWatchers
         public IWebDriver LaunchPage(string url)
         {
             IWebDriver objDriver = null;
-         // Notice the path argument here
+            // Notice the path argument here
             FirefoxDriverService service = FirefoxDriverService.CreateDefaultService(@"..//..//../Files");
-            service.FirefoxBinaryPath = @"C:\Program Files\Mozilla Firefox\firefox.exe";           
-          
+            service.FirefoxBinaryPath = @"C:\Program Files\Mozilla Firefox\firefox.exe";
+
             try
             {
                 objDriver = new FirefoxDriver(service);
@@ -235,8 +235,8 @@ namespace WeightWatchers
                         && elements[i].Text.Contains(locAddressList[i].Text)
                        && elements[i].Text.Contains(locCityStateZipList[i].Text)))
                     {
-                       // Console.WriteLine(string.Format("Meeting Name: {0} \nAddress: {1} \nCity-State-Zip: {2} \nNumber of Meetings: {3} \nDistance: {4}", locNameList[i].Text, locAddressList[i].Text, locCityStateZipList[i].Text, locMeetingsList[i].Text, locDistanceList[i].Text));
-                       // Console.WriteLine("-----------------------");
+                        // Console.WriteLine(string.Format("Meeting Name: {0} \nAddress: {1} \nCity-State-Zip: {2} \nNumber of Meetings: {3} \nDistance: {4}", locNameList[i].Text, locAddressList[i].Text, locCityStateZipList[i].Text, locMeetingsList[i].Text, locDistanceList[i].Text));
+                        // Console.WriteLine("-----------------------");
 
                         flag = true;
                     }
@@ -386,6 +386,8 @@ namespace WeightWatchers
         public void TestCase()
         {
             bool isFlag = false;
+          
+            List<bool> failureList = new List<bool>();
             try
             {
                 // Launch Page
@@ -396,56 +398,74 @@ namespace WeightWatchers
 
                 // Compare window Title
                 isFlag = CompareTitle(getWindowTitle, objControls.WindowTitle);
+                failureList.Add(isFlag);
                 if (isFlag)
                     // Click Find Meeting Link
                     if (ActionClick(driver, objControls.FindMeeting, "Find Meeting Link"))
                     {
+
                         // Get Find Meeting Window Title
                         getWindowTitle = GetWindowTitle(driver);
 
                         // Compare Find Meeting Window Title
                         isFlag = CompareTitle(getWindowTitle, objControls.FindMeetingPageTitle);
-
+                        failureList.Add(isFlag);
 
                         // Serach for 10011 area for meetings
-                        if (EnterText(driver, objControls.SearchTextBox, "10011", "Search text box"))
+                        isFlag = EnterText(driver, objControls.SearchTextBox, "10011", "Search text box");
+                        failureList.Add(isFlag);
+                        if (isFlag)
                         {
                             // Click Search Button 
-                            if (ActionClick(driver, objControls.SearchButton, "Search Button"))
+                            isFlag = ActionClick(driver, objControls.SearchButton, "Search Button");
+                            failureList.Add(isFlag);
+                            if (isFlag)
                             {
+
                                 // Find all Meeting details on first Page
-                                if (FindAllMeetingsDetails(driver))
+                                isFlag = FindAllMeetingsDetails(driver);
+                                failureList.Add(isFlag);
+                                if (isFlag)
                                 {
+
                                     // Get First Meeting name and its distance 
                                     string meetingName = string.Empty;
                                     string location = string.Empty;
-                                    if (GetMeetingNameWithLocation(driver, out meetingName, out location, 1))
+                                    isFlag = GetMeetingNameWithLocation(driver, out meetingName, out location, 1);
+                                    failureList.Add(isFlag);
+                                    if (isFlag)
                                     {
-                                        if (ClickMeetingInstance(driver, 1))
-                                        {
-                                            string dispLocName=GetText(driver, objControls.Location_name);
-                                            if (dispLocName.Equals(meetingName))
-                                            {
-                                                Console.WriteLine(string.Format("---------Verifed displayed location name : {0} matches with the name of the first searched result: {1} that was clicked: SUCCESS",dispLocName, meetingName) );
-                                                string dayToday = DateTime.Now.DayOfWeek.ToString();
 
-                                                ArrayList todaysHoursOfOperation = FindTodaysOperationalHours(driver, dayToday);
-                                                Console.WriteLine("Operational hours for Today : " + dayToday);
-                                                foreach (string hours in todaysHoursOfOperation)
-                                                {
-                                                    Console.WriteLine(hours);
-                                                }
-                                            }
+                                        isFlag = ClickMeetingInstance(driver, 1);
+                                        failureList.Add(isFlag);
+                                        if (isFlag)
+                                        {
+                                            string dispLocName = GetText(driver, objControls.Location_name);
+                                            isFlag = dispLocName.Equals(meetingName);
+                                            failureList.Add(isFlag);
+                                            if (isFlag)
+                                                Console.WriteLine(string.Format("---------Verifed displayed location name : {0} matches with the name of the first searched result: {1} that was clicked: SUCCESS", dispLocName, meetingName));
                                             else
-                                                  Console.WriteLine(string.Format("---------Verifed displayed location name : {0} matches with the name of the first searched result: {1} that was clicked: FAILURE",dispLocName, meetingName) );
-                                             
+                                                Console.WriteLine(string.Format("---------Verifed displayed location name : {0} matches with the name of the first searched result: {1} that was clicked: FAILURE", dispLocName, meetingName));
+
+                                            string dayToday = DateTime.Now.DayOfWeek.ToString();
+
+                                            ArrayList todaysHoursOfOperation = FindTodaysOperationalHours(driver, dayToday);
+                                            Console.WriteLine("Operational hours for Today : " + dayToday);
+                                            foreach (string hours in todaysHoursOfOperation)
+                                            {
+                                                Console.WriteLine(hours);
+                                            }
+                                            failureList.Add(true);
                                         }
+
                                     }
                                 }
                             }
                         }
-                    }                    
+                    }
             }
+
             catch (Exception ex)
             {
                 string error = ex.Message;
@@ -454,7 +474,15 @@ namespace WeightWatchers
             finally
             {
                 driver.Close();
-                Console.WriteLine("---------------Test Case Completed---------------");
+                foreach (bool result in failureList)
+                {
+                    if (!result)
+                    {
+                        Console.WriteLine("---------------Test Case FAILED---------------");
+                        break;
+                    }
+                }
+                Console.WriteLine("---------------Test Case COMPLETED---------------");
                 Console.Read();
 
             }
