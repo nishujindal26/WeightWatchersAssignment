@@ -16,10 +16,7 @@ namespace Assignment
                 flag = RandomNumber();
                 if (!flag)
                 {
-                    Console.WriteLine("---------Execute next program - Dictionary vaues/nEnter Y for Yes or any other key to quit the application");
-                    string val = Console.Read().ToString();
-                    if (!(val == "Y" || val == "y"))
-                        return;
+                    Console.WriteLine("---------Could not execute Random Numbers program becauseof invalid values");                  
                 }
                 Console.WriteLine("-------------------------------------");
                 Console.WriteLine("Enter key to start the Dictionary Program");
@@ -46,7 +43,7 @@ namespace Assignment
             try
             {
                 DictionaryAssignment objdictionary = new DictionaryAssignment();
-                objdictionary.WriteDictionayIntoFile(@"../Sample.txt", @"../Dictionary.txt", true);
+                objdictionary.WriteDictionayIntoFile(@"..//..//../Files/Sample.txt", @"..//..//../Files/Dictionary.txt", true);
 
             }
             catch (Exception ex)
