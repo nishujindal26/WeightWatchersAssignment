@@ -46,7 +46,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="HelperMethods.cs" />
     <Compile Include="MainPageControls.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ControlUtility.cs" />

@@ -30,9 +30,13 @@ namespace WeightWatchers
         public IWebDriver LaunchPage(string url)
         {
             IWebDriver objDriver = null;
+         // Notice the path argument here
+            FirefoxDriverService service = FirefoxDriverService.CreateDefaultService(@"..//..//../Files");
+            service.FirefoxBinaryPath = @"C:\Program Files\Mozilla Firefox\firefox.exe";           
+          
             try
             {
-                objDriver = new FirefoxDriver();
+                objDriver = new FirefoxDriver(service);
                 objDriver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
                 objDriver.Navigate().GoToUrl(objControls.Url);
                 Console.WriteLine("URL : " + objControls.Url + " launched");
